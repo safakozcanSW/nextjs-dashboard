@@ -24,7 +24,7 @@ export async function fetchRevenue() {
     await new Promise((resolve) => setTimeout(resolve, 3000));
     const data = await sql<Revenue>`SELECT * FROM revenue`;
 
-    console.log('Data fetch completed after 3 seconds.');
+    console.log('revenue data fetch completed after 3 seconds.');
 
     return data.rows;
   } catch (error) {
@@ -35,12 +35,17 @@ export async function fetchRevenue() {
 
 export async function fetchLatestInvoices() {
   try {
+    console.log('Fetching LatestInvoices data...');
+
     const data = await sql<LatestInvoiceRaw>`
       SELECT invoices.amount, customers.name, customers.image_url, customers.email, invoices.id
       FROM invoices
       JOIN customers ON invoices.customer_id = customers.id
       ORDER BY invoices.date DESC
       LIMIT 5`;
+
+    await new Promise((resolve) => setTimeout(resolve, 1000));
+    console.log('LatestInvoices fetch completed after 3 seconds.');
 
     const latestInvoices = data.rows.map((invoice) => ({
       ...invoice,
@@ -59,9 +64,7 @@ export async function fetchCardData() {
     // However, we are intentionally splitting them to demonstrate
     // how to initialize multiple queries in parallel with JS.
 
-    // console.log('Fetching card data...');
-    await new Promise((resolve) => setTimeout(resolve, 3000));
-    // console.log('Data fetch completed after 3 seconds.');
+    console.log('Fetching card data...');
 
     const invoiceCountPromise = sql`SELECT COUNT(*) FROM invoices`;
     const customerCountPromise = sql`SELECT COUNT(*) FROM customers`;
@@ -69,6 +72,9 @@ export async function fetchCardData() {
          SUM(CASE WHEN status = 'paid' THEN amount ELSE 0 END) AS "paid",
          SUM(CASE WHEN status = 'pending' THEN amount ELSE 0 END) AS "pending"
          FROM invoices`;
+
+    await new Promise((resolve) => setTimeout(resolve, 1000));
+    console.log('Card Data fetch completed after 3 seconds.');
 
     const data = await Promise.all([
       invoiceCountPromise,
