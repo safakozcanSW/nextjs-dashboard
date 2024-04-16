@@ -1,3 +1,5 @@
+// ! SPEED INSIGHTS
+import { SpeedInsights } from "@vercel/speed-insights/next"
 // !GLOBAL CSS
 import '@/app/ui/global.css';
 // !FONTS
