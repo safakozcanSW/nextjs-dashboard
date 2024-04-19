@@ -1,5 +1,11 @@
 import { PencilIcon, PlusIcon, TrashIcon } from '@heroicons/react/24/outline';
 import Link from 'next/link';
+import { deleteInvoice } from '@/app/lib/actions';
+
+
+// !======================================================================
+// !Button(Fatura Oluştur(CREATE))
+// !======================================================================
 
 export function CreateInvoice() {
   return (
@@ -12,6 +18,9 @@ export function CreateInvoice() {
     </Link>
   );
 }
+// !======================================================================
+// !Button(Fatura Güncelle(UPDATE))
+// !======================================================================
 
 export function UpdateInvoice({ id }: { id: string }) {
   return (
@@ -23,14 +32,20 @@ export function UpdateInvoice({ id }: { id: string }) {
     </Link>
   );
 }
+// !======================================================================
+// !Button(Fatura Sil(DELETE))
+// !======================================================================
 
 export function DeleteInvoice({ id }: { id: string }) {
+  // kendisine parametre ile gelen id'yi, "deleteInvoice" adlı metoda vererek bir kopyasını oluşturur.
+  // butona tıklandığında kopyalanan bu metodu çalıştırır.
+  const deleteInvoiceWithId = deleteInvoice.bind(null, id);
   return (
-    <>
+    <form action={deleteInvoiceWithId}>
       <button className="rounded-md border p-2 hover:bg-gray-100">
         <span className="sr-only">Delete</span>
         <TrashIcon className="w-5" />
       </button>
-    </>
+    </form>
   );
 }
